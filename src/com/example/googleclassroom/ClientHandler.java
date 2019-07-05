@@ -216,6 +216,7 @@ public class ClientHandler extends Thread {
                     System.out.println(ID);
                     int last = Class.classes.size();
                     Class thisClass = new Class(str[1] , str[2] , str[3] , ID , last);
+                    thisClass.topics.add(new Topic("no topic"));
                     Class.classes.add(thisClass);
                     System.out.println(Class.classes.get(last).name);
                     System.out.println(last);
@@ -416,6 +417,44 @@ public class ClientHandler extends Thread {
                 }
 
             }
+
+            else if (str[0].equals("add_topic")){
+                System.out.println("add_topic is here");
+
+                int i;
+                for (i = 0; i < User.users.size(); i++) {
+                    if (User.users.get(i).username.equals(str[2])){
+                        System.out.println("user found");
+                        break;
+                    }
+                }
+                int j;
+                for (j = 0; j < Class.classes.size(); j++) {
+                    if (Class.classes.get(j).name.equals(str[3])){
+                        System.out.println("class found");
+                        System.out.println(j);
+                        break;
+                    }
+                }
+
+                int a;
+                for (a = 0; a < User.users.get(i).classes.size(); a++) {
+                    if (User.users.get(i).classes.get(a).name.equals(str[3])){
+                        System.out.println(a);
+                        break;
+                    }
+                }
+
+                Topic tempTopic = new Topic(str[1]);
+                if (User.users.get(i).classes.get(a).topics.size()==0)
+                    User.users.get(i).classes.get(a).topics.add(new Topic("no topic"));
+                User.users.get(i).classes.get(a).topics.add(tempTopic);
+                for (int k = 0; k < User.users.get(i).classes.get(a).topics.size(); k++) {
+                    System.out.println(User.users.get(i).classes.get(a).topics.get(k).topicname);
+                }
+
+            }
+
 
 
 

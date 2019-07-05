@@ -24,25 +24,11 @@ public class Class implements Serializable {
         this.description = description;
         this.roomNumber = roomNumber;
         this.teachers = new ArrayList<User>();
-        this.students =  new ArrayList<User>();
-//        this.topics = new ArrayList<Topic>();
-//        topics.add(new Topic("no topic"));
+        this.students =  new ArrayList<User>();;
+        this.topics = new ArrayList<Topic>();
         this.index = index;
     }
 
-    public Class(String name, String description, String roomNumber) {
-        this.name = name;
-        this.description = description;
-        this.roomNumber = roomNumber;
-    }
-
-    public Class(String name, String description, String roomNumber, ArrayList<User> teachers, ArrayList<User> stuents) {
-        this.name = name;
-        this.description = description;
-        this.roomNumber = roomNumber;
-        this.teachers = teachers;
-        this.students = stuents;
-    }
 
     public void setTeachers(ArrayList<User> teachers) {
         this.teachers = teachers;
