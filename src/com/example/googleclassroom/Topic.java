@@ -11,6 +11,11 @@ public class Topic implements Serializable {
     ArrayList<Assignment> assignments;
     public Topic(String topicname) {
         this.topicname = topicname;
+        this.assignments = new ArrayList<Assignment>();
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return topicname.equals(((Topic)obj).topicname);
+    }
 }

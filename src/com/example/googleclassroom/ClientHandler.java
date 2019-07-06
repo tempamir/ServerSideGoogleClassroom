@@ -144,7 +144,9 @@ public class ClientHandler extends Thread {
                 }
 
                 int j;
+                System.out.println( str[1]+" " + str[2]);
                 for (j = 0; j < Class.classes.size(); j++) {
+                    System.out.println(Class.classes.get(j).name);
                     if (Class.classes.get(j).name.equals(str[2])){
                         break;
                     }
@@ -452,6 +454,10 @@ public class ClientHandler extends Thread {
                 User.users.get(i).classes.get(a).topics.add(tempTopic);
                 for (int k = 0; k < User.users.get(i).classes.get(a).topics.size(); k++) {
                     System.out.println(User.users.get(i).classes.get(a).topics.get(k).topicname);
+                    out.writeObject(User.users.get(i));
+                    out.flush();
+                    out.writeObject(Class.classes.get(j));
+                    out.flush();
                 }
 
                 User.save();
@@ -485,9 +491,80 @@ public class ClientHandler extends Thread {
                 out.flush();
 
             }
+            else if (str[0].equals("create_assign")){
+                System.out.println("choose is here");
+                System.out.println(str[1]+ "is class name");
+                int i;
+                for (i = 0; i < User.users.size(); i++) {
+                    if (User.users.get(i).username.equals(str[2])){
+                        System.out.println("user found");
+                        break;
+                    }
+                }
+                int j;
+                for (j = 0; j < Class.classes.size(); j++) {
+                    if (Class.classes.get(j).name.equals(str[1])){
+                        System.out.println("class found");
+                        System.out.println(j);
+                        break;
+                    }
+                }
 
+                int a;
+                for (a = 0; a < User.users.get(i).classes.size(); a++) {
+                    if (User.users.get(i).classes.get(a).name.equals(str[1])){
+                        System.out.println(a);
+                        break;
+                    }
+                    System.out.println(User.users.get(i).classes.get(a).name);
+                }
+                int topicindex=0;
+                if (!str[7].equals("no topic"))
+                    topicindex = User.users.get(i).classes.get(a).findTopic(str[7]);
+                byte[] pic = (byte[])in.readObject();
+                Assignment temp = new Assignment(str[3],str[4],str[5],str[6],str[8],pic);
+                User.users.get(i).classes.get(a).topics.get(topicindex).assignments.add(temp);
+                System.out.println("assigment created");
+            }
+            else if (str[0].equals("update_class")){
+                System.out.println("choose is hereeee");
+                int i;
+                for (i = 0; i < User.users.size(); i++) {
+                    if (User.users.get(i).username.equals(str[2])){
+                        System.out.println("user found");
+                        break;
+                    }
+                }
+                int j;
+                for (j = 0; j < Class.classes.size(); j++) {
+                    if (Class.classes.get(j).name.equals(str[1])){
+                        System.out.println("class found");
+                        System.out.println(j);
+                        break;
+                    }
+                }
 
-
+                int a;
+                for (a = 0; a < User.users.get(i).classes.size(); a++) {
+                    if (User.users.get(i).classes.get(a).name.equals(str[1])){
+                        System.out.println(a);
+                        break;
+                    }
+                }
+                User.users.get(i).classes.get(a).name = str[3];
+                User.users.get(i).classes.get(a).roomNumber = str[5];
+                User.users.get(i).classes.get(a).description = str[4];
+                Class.classes.get(j).name = str[3];
+                Class.classes.get(j).description = str[4];
+                Class.classes.get(j).roomNumber = str[5];
+                System.out.println("class Updated");
+                System.out.println(User.users.get(i).classes.get(a).name);
+                System.out.println(Class.classes.get(j).name);
+                out.writeObject(User.users.get(i));
+                out.flush();
+                out.writeObject(Class.classes.get(j));
+                out.flush();
+            }
 
 
             in.close();
