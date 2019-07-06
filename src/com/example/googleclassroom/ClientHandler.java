@@ -521,6 +521,8 @@ public class ClientHandler extends Thread {
                 int topicindex=0;
                 if (!str[7].equals("no topic"))
                     topicindex = User.users.get(i).classes.get(a).findTopic(str[7]);
+                else
+                    topicindex = 0;
                 byte[] pic = (byte[])in.readObject();
                 Assignment temp = new Assignment(str[3],str[4],str[5],str[6],str[8],pic);
                 User.users.get(i).classes.get(a).topics.get(topicindex).assignments.add(temp);
@@ -564,6 +566,44 @@ public class ClientHandler extends Thread {
                 out.flush();
                 out.writeObject(Class.classes.get(j));
                 out.flush();
+            }
+
+
+            else if (str[0].equals("title_check")){
+
+                boolean b = true;
+
+                for (int i = 0; i < User.users.size(); i++) {
+                    if (User.users.get(i).username.equals(str[2])){
+
+                        for (int j = 0; j < User.users.get(i).classes.size(); j++) {
+                            if (User.users.get(i).classes.get(j).name.equals(str[3])){
+
+                                for (int k = 0; k < User.users.get(i).classes.get(j).topics.size(); k++) {
+                                    if (User.users.get(i).classes.get(j).topics.get(k).topicname.equals(str[4])){
+
+                                        for (int l = 0; l < User.users.get(i).classes.get(j).topics.get(k).assignments.size(); l++) {
+                                            if (User.users.get(i).classes.get(j).topics.get(k).assignments.get(l).name.equals(str[1])){
+
+                                                b = false;
+                                                System.out.println("title already exists");
+                                                break;
+
+                                            }
+                                        }
+
+                                    }
+                                }
+
+                            }
+                        }
+
+                    }
+                }
+
+                out.writeBoolean(b);
+                out.flush();
+
             }
 
 
