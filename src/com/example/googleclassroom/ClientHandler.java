@@ -14,7 +14,7 @@ public class ClientHandler extends Thread {
     ObjectInputStream in;
     ObjectOutputStream out;
 
-    public ClientHandler(Socket socket){
+    public ClientHandler(Socket socket) {
         System.out.println("socket");
         this.socket = socket;
         //clients.add(this);
@@ -27,18 +27,18 @@ public class ClientHandler extends Thread {
             in = new ObjectInputStream(socket.getInputStream());
             out = new ObjectOutputStream(socket.getOutputStream());
 //            System.out.println("here here");
-            String[] str = (String[])in.readObject();
+            String[] str = (String[]) in.readObject();
             System.out.println(str[0]);
 //            for (int i = 0; i < b.length; i++) {
 //                System.out.println(b[i]);
 //            }
 
-            if (str[0].equals("sign_in")){
+            if (str[0].equals("sign_in")) {
                 boolean sign = false;
                 int i;
                 System.out.println("sign in");
                 for (i = 0; i < User.users.size(); i++) {
-                    if (User.users.get(i).username.equals(str[1]) && User.users.get(i).password.equals(str[2])){
+                    if (User.users.get(i).username.equals(str[1]) && User.users.get(i).password.equals(str[2])) {
                         sign = true;
                         System.out.println("user signed in");
                         break;
@@ -46,18 +46,17 @@ public class ClientHandler extends Thread {
                 }
                 out.writeBoolean(sign);
                 out.flush();
-                if (sign){
+                if (sign) {
                     out.writeObject(User.users.get(i));
                     out.flush();
                 }
-            }
-            else if (str[0].equals("username_check")){
+            } else if (str[0].equals("username_check")) {
                 boolean b = false;
 
                 System.out.println("username finding");
 
                 for (int i = 0; i < User.users.size(); i++) {
-                    if(User.users.get(i).username.equals(str[1])){
+                    if (User.users.get(i).username.equals(str[1])) {
                         b = true;
                     }
                 }
@@ -65,20 +64,19 @@ public class ClientHandler extends Thread {
                 out.writeBoolean(b);
                 out.flush();
 
-            }
-            else if (str[0].equals("register")){
+            } else if (str[0].equals("register")) {
 
                 boolean b = true;
 
                 System.out.println("registration");
 
                 for (int i = 0; i < User.users.size(); i++) {
-                    if (User.users.get(i).username.equals(str[1])){
+                    if (User.users.get(i).username.equals(str[1])) {
                         b = false;
                     }
                 }
 
-                if (!str[2].equals(str[3])){
+                if (!str[2].equals(str[3])) {
                     b = false;
                 }
 
@@ -88,10 +86,10 @@ public class ClientHandler extends Thread {
                 if (b) {
 
                     byte[] picture = (byte[]) in.readObject();
-                    User tempUser = new User(str[1] , str[2] , picture);
+                    User tempUser = new User(str[1], str[2], picture);
                     User.users.add(tempUser);
                     User.save();
-                    out.writeObject(User.users.get(User.users.size()-1));
+                    out.writeObject(User.users.get(User.users.size() - 1));
                     out.flush();
 
                     System.out.println("hello");
@@ -102,14 +100,12 @@ public class ClientHandler extends Thread {
 
                 }
 
-            }
-
-            else if (str[0].equals("register_username_check")){
+            } else if (str[0].equals("register_username_check")) {
 
                 boolean b = true;
 
                 for (int i = 0; i < User.users.size(); i++) {
-                    if (User.users.get(i).username.equals(str[1])){
+                    if (User.users.get(i).username.equals(str[1])) {
                         b = false;
                         break;
                     }
@@ -118,13 +114,11 @@ public class ClientHandler extends Thread {
                 out.writeBoolean(b);
                 out.flush();
 
-            }
-
-            else if (str[0].equals("refresh_main_page")){
+            } else if (str[0].equals("refresh_main_page")) {
 
                 int i;
-                for ( i = 0; i < User.users.size(); i++) {
-                    if (User.users.get(i).username.equals(str[1])){
+                for (i = 0; i < User.users.size(); i++) {
+                    if (User.users.get(i).username.equals(str[1])) {
                         break;
                     }
                 }
@@ -132,22 +126,20 @@ public class ClientHandler extends Thread {
                 out.writeObject(User.users.get(i));
                 out.flush();
 
-            }
-
-            else if (str[0].equals("refresh_classes")){
+            } else if (str[0].equals("refresh_classes")) {
 
                 int i;
-                for ( i = 0; i < User.users.size(); i++) {
-                    if (User.users.get(i).username.equals(str[1])){
+                for (i = 0; i < User.users.size(); i++) {
+                    if (User.users.get(i).username.equals(str[1])) {
                         break;
                     }
                 }
 
                 int j;
-                System.out.println( str[1]+" " + str[2]);
+                System.out.println(str[1] + " " + str[2]);
                 for (j = 0; j < Class.classes.size(); j++) {
                     System.out.println(Class.classes.get(j).name);
-                    if (Class.classes.get(j).name.equals(str[2])){
+                    if (Class.classes.get(j).name.equals(str[2])) {
                         break;
                     }
                 }
@@ -157,14 +149,12 @@ public class ClientHandler extends Thread {
                 out.writeObject(Class.classes.get(j));
                 out.flush();
 
-            }
-
-            else if (str[0].equals("createclass_name_check")){
+            } else if (str[0].equals("createclass_name_check")) {
 
                 boolean b = true;
 
                 for (int i = 0; i < Class.classes.size(); i++) {
-                    if (Class.classes.get(i).name.equals(str[1])){
+                    if (Class.classes.get(i).name.equals(str[1])) {
                         b = false;
                         break;
                     }
@@ -173,14 +163,12 @@ public class ClientHandler extends Thread {
                 out.writeBoolean(b);
                 out.flush();
 
-            }
-
-            else if (str[0].equals("createclass_roomnumber_check")){
+            } else if (str[0].equals("createclass_roomnumber_check")) {
 
                 boolean b = true;
 
                 for (int i = 0; i < Class.classes.size(); i++) {
-                    if (Class.classes.get(i).roomNumber.equals(str[1])){
+                    if (Class.classes.get(i).roomNumber.equals(str[1])) {
                         b = false;
                         break;
                     }
@@ -189,14 +177,12 @@ public class ClientHandler extends Thread {
                 out.writeBoolean(b);
                 out.flush();
 
-            }
-
-            else if (str[0].equals("create_class")){
+            } else if (str[0].equals("create_class")) {
 
                 boolean b = true;
 
                 for (int i = 0; i < Class.classes.size(); i++) {
-                    if (str[1].equals(Class.classes.get(i).name) || str[3].equals(Class.classes.get(i).roomNumber)){
+                    if (str[1].equals(Class.classes.get(i).name) || str[3].equals(Class.classes.get(i).roomNumber)) {
                         b = false;
                     }
                 }
@@ -204,22 +190,22 @@ public class ClientHandler extends Thread {
                 out.writeBoolean(b);
                 out.flush();
 
-                if (b){
+                if (b) {
                     int j;
                     for (j = 0; j < User.users.size(); j++) {
-                        if (User.users.get(j).username.equals(str[4])){
+                        if (User.users.get(j).username.equals(str[4])) {
                             System.out.println("user found");
                             break;
                         }
                     }
                     System.out.println(j);
                     String ID = UUID.randomUUID().toString();
-                    ID  = ID.substring(0,6);
+                    ID = ID.substring(0, 6);
                     System.out.println(ID);
                     int last = Class.classes.size();
                     ArrayList<Topic> topics = new ArrayList<>();
                     topics.add(new Topic("no topic"));
-                    Class thisClass = new Class(str[1] , str[2] , str[3] , ID , last , topics);
+                    Class thisClass = new Class(str[1], str[2], str[3], ID, last, topics);
                     Class.classes.add(thisClass);
                     System.out.println(Class.classes.get(last).name);
                     System.out.println(last);
@@ -236,21 +222,19 @@ public class ClientHandler extends Thread {
 
                 }
 
-            }
-
-            else if (str[0].equals("join_class")){
+            } else if (str[0].equals("join_class")) {
 
                 int check = 0;
                 int i;
 
                 for (i = 0; i < Class.classes.size(); i++) {
-                    if (Class.classes.get(i).id.equals(str[1])){
+                    if (Class.classes.get(i).id.equals(str[1])) {
                         check = 1;
-                        if (Class.classes.get(i).teachers.get(0).username.equals(str[2])){
+                        if (Class.classes.get(i).teachers.get(0).username.equals(str[2])) {
                             check = 2;
                         }
                         for (int k = 0; k < Class.classes.get(i).students.size(); k++) {
-                            if (Class.classes.get(i).students.get(k).username.equals(str[2])){
+                            if (Class.classes.get(i).students.get(k).username.equals(str[2])) {
                                 check = 3;
                             }
                         }
@@ -262,11 +246,10 @@ public class ClientHandler extends Thread {
                 out.flush();
 
 
-
                 if (check == 1) {
                     int j;
                     for (j = 0; j < User.users.size(); j++) {
-                        if (User.users.get(j).username.equals(str[2])){
+                        if (User.users.get(j).username.equals(str[2])) {
                             break;
                         }
                     }
@@ -283,30 +266,28 @@ public class ClientHandler extends Thread {
 
                 }
 
-            }
+            } else if (str[0].equals("student_remove")) {
 
-            else if (str[0].equals("student_remove")){
-
-                int i , j;
+                int i, j;
                 for (i = 0; i < User.users.size(); i++) {
-                    if (User.users.get(i).username.equals(str[1])){
+                    if (User.users.get(i).username.equals(str[1])) {
                         break;
                     }
                 }
-                for ( j = 0; j < Class.classes.size(); j++) {
-                    if (Class.classes.get(j).name.equals(str[2])){
+                for (j = 0; j < Class.classes.size(); j++) {
+                    if (Class.classes.get(j).name.equals(str[2])) {
                         break;
                     }
                 }
                 int a;
                 for (a = 0; a < User.users.get(i).classes.size(); a++) {
-                    if (User.users.get(i).classes.get(a).name.equals(str[2])){
+                    if (User.users.get(i).classes.get(a).name.equals(str[2])) {
                         break;
                     }
                 }
                 int b;
                 for (b = 0; b < Class.classes.get(j).students.size(); b++) {
-                    if (Class.classes.get(j).students.get(b).username.equals(str[1])){
+                    if (Class.classes.get(j).students.get(b).username.equals(str[1])) {
                         System.out.println("hey");
                         break;
                     }
@@ -314,7 +295,7 @@ public class ClientHandler extends Thread {
 
                 System.out.println(a);
                 System.out.println(b);
-
+                
                 User.users.get(i).classes.remove(a);
                 Class.classes.get(j).students.remove(b);
 
@@ -326,35 +307,33 @@ public class ClientHandler extends Thread {
                 out.flush();
                 Class.save();
 
-                for(int k = 0; k < Class.classes.get(j).students.size(); k++){
+                for (int k = 0; k < Class.classes.get(j).students.size(); k++) {
                     System.out.println(Class.classes.get(j).students.get(k).username);
                 }
 
-            }
+            } else if (str[0].equals("teacher_remove")) {
 
-            else if (str[0].equals("teacher_remove")){
-
-                int i , j;
+                int i, j;
                 for (i = 0; i < User.users.size(); i++) {
-                    if (User.users.get(i).username.equals(str[1])){
+                    if (User.users.get(i).username.equals(str[1])) {
                         break;
                     }
                 }
-                for ( j = 0; j < Class.classes.size(); j++) {
-                    if (Class.classes.get(j).name.equals(str[2])){
+                for (j = 0; j < Class.classes.size(); j++) {
+                    if (Class.classes.get(j).name.equals(str[2])) {
                         break;
                     }
                 }
 
                 int a;
                 for (a = 0; a < User.users.get(i).classes.size(); a++) {
-                    if (User.users.get(i).classes.get(a).name.equals(str[2])){
+                    if (User.users.get(i).classes.get(a).name.equals(str[2])) {
                         break;
                     }
                 }
                 int b;
                 for (b = 0; b < Class.classes.get(j).teachers.size(); b++) {
-                    if (Class.classes.get(j).teachers.get(b).username.equals(str[1])){
+                    if (Class.classes.get(j).teachers.get(b).username.equals(str[1])) {
                         System.out.println("hey");
                         break;
                     }
@@ -375,30 +354,28 @@ public class ClientHandler extends Thread {
                 out.flush();
                 Class.save();
 
-            }
+            } else if (str[0].equals("student_leave")) {
 
-            else if (str[0].equals("student_leave")){
-
-                int i , j;
+                int i, j;
                 for (i = 0; i < User.users.size(); i++) {
-                    if (User.users.get(i).username.equals(str[1])){
+                    if (User.users.get(i).username.equals(str[1])) {
                         break;
                     }
                 }
-                for ( j = 0; j < Class.classes.size(); j++) {
-                    if (Class.classes.get(j).name.equals(str[2])){
+                for (j = 0; j < Class.classes.size(); j++) {
+                    if (Class.classes.get(j).name.equals(str[2])) {
                         break;
                     }
                 }
                 int a;
                 for (a = 0; a < User.users.get(i).classes.size(); a++) {
-                    if (User.users.get(i).classes.get(a).name.equals(str[2])){
+                    if (User.users.get(i).classes.get(a).name.equals(str[2])) {
                         break;
                     }
                 }
                 int b;
                 for (b = 0; b < Class.classes.get(j).students.size(); b++) {
-                    if (Class.classes.get(j).students.get(b).username.equals(str[1])){
+                    if (Class.classes.get(j).students.get(b).username.equals(str[1])) {
                         System.out.println("hey");
                         break;
                     }
@@ -415,25 +392,112 @@ public class ClientHandler extends Thread {
                 User.save();
                 Class.save();
 
-                for(int k = 0; k < Class.classes.get(j).students.size(); k++){
+                for (int k = 0; k < Class.classes.get(j).students.size(); k++) {
                     System.out.println(Class.classes.get(j).students.get(k).username);
                 }
 
             }
+            else if (str[0].equals("add_stu"))
+            {
+                System.out.println("stu add");
+                int i, j;
+                boolean b = false;
+                for (i = 0; i < User.users.size(); i++) {
+                    if (User.users.get(i).username.equals(str[2])) {
+                        break;
+                    }
+                }
+                for (j = 0; j < Class.classes.size(); j++) {
+                    if (Class.classes.get(j).name.equals(str[1])) {
+                        break;
+                    }
+                }
+                int c;
+                System.out.println(str[3] + " user search");
+                for (c = 0; i < User.users.size(); c++) {
+                    if (User.users.get(c).username.equals(str[3])) {
+                        b = true;
+                        System.out.println("entered user found");
+                        break;
+                    }
+                }
+                int a;
+                for (a = 0; a < User.users.get(i).classes.size(); a++) {
+                    if (User.users.get(i).classes.get(a).name.equals(str[1])) {
+                        break;
+                    }
+                }
+                System.out.println(b);
+                out.writeBoolean(b);
+                out.flush();
 
-            else if (str[0].equals("add_topic")){
+                if (b)
+                {
+                    User.users.get(c).classes.add(Class.classes.get(j));
+                    Class.classes.get(j).students.add(User.users.get(c));
+                    User.users.get(i).classes.get(a).students.add(User.users.get(c));
+                    out.writeObject(User.users.get(i));
+                    out.flush();
+                    User.save();
+                    out.writeObject(Class.classes.get(j));
+                    out.flush();
+                    Class.save();
+                }
+            }
+            else if (str[0].equals("add_teach")) {
+                int i, j;
+                boolean b = false;
+                for (i = 0; i < User.users.size(); i++) {
+                    if (User.users.get(i).username.equals(str[2])) {
+                        break;
+                    }
+                }
+                for (j = 0; j < Class.classes.size(); j++) {
+                    if (Class.classes.get(j).name.equals(str[1])) {
+                        break;
+                    }
+                }
+                int c;
+                for (c = 0; i < User.users.size(); c++) {
+                    if (User.users.get(c).username.equals(str[3])) {
+                        b = true;
+                        break;
+                    }
+                }
+                int a;
+                for (a = 0; a < User.users.get(i).classes.size(); a++) {
+                    if (User.users.get(i).classes.get(a).name.equals(str[1])) {
+                        break;
+                    }
+                }
+                out.writeBoolean(b);
+                out.flush();
+
+                if (b)
+                {
+                    User.users.get(c).classes.add(Class.classes.get(j));
+                    Class.classes.get(j).teachers.add(User.users.get(c));
+                    User.users.get(i).classes.get(a).teachers.add(User.users.get(c));
+                    out.writeObject(User.users.get(i));
+                    out.flush();
+                    User.save();
+                    out.writeObject(Class.classes.get(j));
+                    out.flush();
+                    Class.save();
+                }
+            } else if (str[0].equals("add_topic")) {
                 System.out.println("add_topic is here");
 
                 int i;
                 for (i = 0; i < User.users.size(); i++) {
-                    if (User.users.get(i).username.equals(str[2])){
+                    if (User.users.get(i).username.equals(str[2])) {
                         System.out.println("user found");
                         break;
                     }
                 }
                 int j;
                 for (j = 0; j < Class.classes.size(); j++) {
-                    if (Class.classes.get(j).name.equals(str[3])){
+                    if (Class.classes.get(j).name.equals(str[3])) {
                         System.out.println("class found");
                         System.out.println(j);
                         break;
@@ -442,7 +506,7 @@ public class ClientHandler extends Thread {
 
                 int a;
                 for (a = 0; a < User.users.get(i).classes.size(); a++) {
-                    if (User.users.get(i).classes.get(a).name.equals(str[3])){
+                    if (User.users.get(i).classes.get(a).name.equals(str[3])) {
                         System.out.println(a);
                         break;
                     }
@@ -463,20 +527,18 @@ public class ClientHandler extends Thread {
                 User.save();
                 Class.save();
 
-            }
-
-            else if (str[0].equals("topic_check")){
+            } else if (str[0].equals("topic_check")) {
 
                 boolean b = true;
 
                 for (int i = 0; i < User.users.size(); i++) {
-                    if (User.users.get(i).username.equals(str[2])){
+                    if (User.users.get(i).username.equals(str[2])) {
                         for (int j = 0; j < User.users.get(i).classes.size(); j++) {
-                            if (User.users.get(i).classes.get(j).name.equals(str[3])){
+                            if (User.users.get(i).classes.get(j).name.equals(str[3])) {
 //                                if (User.users.get(i).classes.get(j).topics.size() == 0)
 //                                    User.users.get(i).classes.get(j).topics.add(new Topic("no topic"));
                                 for (int k = 0; k < User.users.get(i).classes.get(j).topics.size(); k++) {
-                                    if (User.users.get(i).classes.get(j).topics.get(k).topicname.equals(str[1])){
+                                    if (User.users.get(i).classes.get(j).topics.get(k).topicname.equals(str[1])) {
                                         b = false;
                                         System.out.println("topic already exists");
                                         break;
@@ -490,20 +552,19 @@ public class ClientHandler extends Thread {
                 out.writeBoolean(b);
                 out.flush();
 
-            }
-            else if (str[0].equals("create_assign")){
+            } else if (str[0].equals("create_assign")) {
                 System.out.println("choose is here");
-                System.out.println(str[1]+ "is class name");
+                System.out.println(str[1] + "is class name");
                 int i;
                 for (i = 0; i < User.users.size(); i++) {
-                    if (User.users.get(i).username.equals(str[2])){
+                    if (User.users.get(i).username.equals(str[2])) {
                         System.out.println("user found");
                         break;
                     }
                 }
                 int j;
                 for (j = 0; j < Class.classes.size(); j++) {
-                    if (Class.classes.get(j).name.equals(str[1])){
+                    if (Class.classes.get(j).name.equals(str[1])) {
                         System.out.println("class found");
                         System.out.println(j);
                         break;
@@ -512,34 +573,33 @@ public class ClientHandler extends Thread {
 
                 int a;
                 for (a = 0; a < User.users.get(i).classes.size(); a++) {
-                    if (User.users.get(i).classes.get(a).name.equals(str[1])){
+                    if (User.users.get(i).classes.get(a).name.equals(str[1])) {
                         System.out.println(a);
                         break;
                     }
                     System.out.println(User.users.get(i).classes.get(a).name);
                 }
-                int topicindex=0;
+                int topicindex = 0;
                 if (!str[7].equals("no topic"))
                     topicindex = User.users.get(i).classes.get(a).findTopic(str[7]);
                 else
                     topicindex = 0;
-                byte[] pic = (byte[])in.readObject();
-                Assignment temp = new Assignment(str[3],str[4],str[5],str[6],str[8],pic);
+                byte[] pic = (byte[]) in.readObject();
+                Assignment temp = new Assignment(str[3], str[4], str[5], str[6], str[8], pic);
                 User.users.get(i).classes.get(a).topics.get(topicindex).assignments.add(temp);
                 System.out.println("assigment created");
-            }
-            else if (str[0].equals("update_class")){
+            } else if (str[0].equals("update_class")) {
                 System.out.println("choose is hereeee");
                 int i;
                 for (i = 0; i < User.users.size(); i++) {
-                    if (User.users.get(i).username.equals(str[2])){
+                    if (User.users.get(i).username.equals(str[2])) {
                         System.out.println("user found");
                         break;
                     }
                 }
                 int j;
                 for (j = 0; j < Class.classes.size(); j++) {
-                    if (Class.classes.get(j).name.equals(str[1])){
+                    if (Class.classes.get(j).name.equals(str[1])) {
                         System.out.println("class found");
                         System.out.println(j);
                         break;
@@ -548,7 +608,7 @@ public class ClientHandler extends Thread {
 
                 int a;
                 for (a = 0; a < User.users.get(i).classes.size(); a++) {
-                    if (User.users.get(i).classes.get(a).name.equals(str[1])){
+                    if (User.users.get(i).classes.get(a).name.equals(str[1])) {
                         System.out.println(a);
                         break;
                     }
@@ -611,11 +671,9 @@ public class ClientHandler extends Thread {
             out.close();
             socket.close();
 
-        }
-        catch (IOException e2){
+        } catch (IOException e2) {
             e2.printStackTrace();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
