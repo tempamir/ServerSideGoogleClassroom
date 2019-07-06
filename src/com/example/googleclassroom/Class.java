@@ -68,7 +68,14 @@ public class Class implements Serializable {
     public ArrayList<User> getTeachers() {
         return teachers;
     }
-
+    public int findTopic(String Topicname)
+    {
+        for (int i=0;i<topics.size();i++) {
+            if (topics.get(i).topicname.equals(Topicname))
+                return i;
+        }
+        return -1;
+    }
     //reading
     static {
         try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream("classes.ser"))) {
