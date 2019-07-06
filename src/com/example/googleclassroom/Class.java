@@ -18,14 +18,14 @@ public class Class implements Serializable {
     ArrayList<Topic> topics;
 
 
-    public Class(String name, String description, String roomNumber , String id , int index) {
+    public Class(String name, String description, String roomNumber , String id , int index , ArrayList<Topic> topics) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.roomNumber = roomNumber;
         this.teachers = new ArrayList<User>();
         this.students =  new ArrayList<User>();;
-        this.topics = new ArrayList<Topic>();
+        this.topics = topics;
         this.index = index;
     }
 

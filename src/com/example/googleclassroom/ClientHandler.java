@@ -215,8 +215,9 @@ public class ClientHandler extends Thread {
                     ID  = ID.substring(0,6);
                     System.out.println(ID);
                     int last = Class.classes.size();
-                    Class thisClass = new Class(str[1] , str[2] , str[3] , ID , last);
-                    thisClass.topics.add(new Topic("no topic"));
+                    ArrayList<Topic> topics = new ArrayList<>();
+                    topics.add(new Topic("no topic"));
+                    Class thisClass = new Class(str[1] , str[2] , str[3] , ID , last , topics);
                     Class.classes.add(thisClass);
                     System.out.println(Class.classes.get(last).name);
                     System.out.println(last);
@@ -446,12 +447,42 @@ public class ClientHandler extends Thread {
                 }
 
                 Topic tempTopic = new Topic(str[1]);
-                if (User.users.get(i).classes.get(a).topics.size()==0)
-                    User.users.get(i).classes.get(a).topics.add(new Topic("no topic"));
+//                if (User.users.get(i).classes.get(a).topics.size()==0)
+//                    User.users.get(i).classes.get(a).topics.add(new Topic("no topic"));
                 User.users.get(i).classes.get(a).topics.add(tempTopic);
                 for (int k = 0; k < User.users.get(i).classes.get(a).topics.size(); k++) {
                     System.out.println(User.users.get(i).classes.get(a).topics.get(k).topicname);
                 }
+
+                User.save();
+                Class.save();
+
+            }
+
+            else if (str[0].equals("topic_check")){
+
+                boolean b = true;
+
+                for (int i = 0; i < User.users.size(); i++) {
+                    if (User.users.get(i).username.equals(str[2])){
+                        for (int j = 0; j < User.users.get(i).classes.size(); j++) {
+                            if (User.users.get(i).classes.get(j).name.equals(str[3])){
+//                                if (User.users.get(i).classes.get(j).topics.size() == 0)
+//                                    User.users.get(i).classes.get(j).topics.add(new Topic("no topic"));
+                                for (int k = 0; k < User.users.get(i).classes.get(j).topics.size(); k++) {
+                                    if (User.users.get(i).classes.get(j).topics.get(k).topicname.equals(str[1])){
+                                        b = false;
+                                        System.out.println("topic already exists");
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                out.writeBoolean(b);
+                out.flush();
 
             }
 
